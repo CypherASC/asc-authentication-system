@@ -1,0 +1,42 @@
+{
+  "name": "@asynccypher/asc-sdk",
+  "version": "1.0.0",
+  "description": "SDK oficial para integração com o sistema ASC de autenticação empresarial",
+  "main": "asc-sdk.js",
+  "types": "asc-sdk.d.ts",
+  "author": "AsyncCypher <contato.asynccypher@gmail.com>",
+  "license": "CC-BY-NC-ND-4.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CypherASC/asc-authentication-system"
+  },
+  "keywords": [
+    "autenticacao",
+    "seguranca",
+    "jwt",
+    "sdk",
+    "enterprise",
+    "asc"
+  ],
+  "files": [
+    "asc-sdk.js",
+    "asc-sdk.d.ts",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node build.js",
+    "test": "jest",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "@types/node": "^20.10.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browser": {
+    "./asc-sdk.js": "./asc-sdk.browser.js"
+  }
+}

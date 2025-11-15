@@ -1,0 +1,27 @@
+{
+  "nomeProjeto": "asc-sistema-autenticacao",
+  "versao": "1.0.0",
+  "autor": "AsyncCypher <contato.asynccypher@gmail.com>",
+  "licenca": "CC-BY-NC-ND-4.0",
+  "copyright": "Copyright (c) 2025 AsyncCypher. Todos os direitos reservados.",
+  "geradoEm": "2025-11-15T19:45:00.831Z",
+  "repositorio": "https://github.com/CypherASC/asc-authentication-system",
+  "arquivos": {
+    "package.json": "e02c34d226199a5c064ed1c316b0a5e205cc52c5fe936bf62da1dcdd8c0a309f",
+    "LICENSE": "a56ac6a15508783cbff2a42415a71b0caf11db9abb86fe7bc2ce1d9186721eca",
+    "src/nucleo/motor-asc.js": "b85b5c6196705cbc7adca1e9a21679bcb7a2840cfaf2af50a4f3b84f3cf2b352",
+    "src/nucleo/verificador-integridade.js": "3a9a86f2c8a9233885800a6c3823c25093f295ba5802a64981e4213ea3b7488b"
+  },
+  "metadadosProtegidos": {
+    "nome": "asc-sistema-autenticacao",
+    "descricao": "Sistema Avançado de Segurança e Autenticação para Aplicações Empresariais",
+    "autor": "AsyncCypher <contato.asynccypher@gmail.com>",
+    "repositorio": "https://github.com/CypherASC/asc-authentication-system"
+  },
+  "configuracaoSeguranca": {
+    "verificacaoIntegridade": true,
+    "protecaoLicenca": true,
+    "logViolacoes": true,
+    "modoRestritivo": false
+  }
+}

@@ -1,0 +1,114 @@
+# Licença de Software ASC (AsyncSystemCaption)
+
+**Copyright (c) 2025 AsyncCypher. Todos os direitos reservados.**
+
+Este software está licenciado sob os termos da Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License, com termos adicionais específicos conforme detalhado abaixo.
+
+## Termos de Uso Permitido
+
+Este software pode ser utilizado nas seguintes condições:
+
+**Uso Educacional e Acadêmico**
+- Permitido para fins de ensino, aprendizado e pesquisa acadêmica
+- Uso em instituições educacionais para demonstração e treinamento
+- Análise do código fonte para fins de estudo de arquitetura de software
+
+**Uso Pessoal Não Comercial**
+- Implementação em projetos pessoais sem finalidade comercial
+- Desenvolvimento e teste em ambientes de desenvolvimento local
+- Uso para portfólio pessoal e demonstrações técnicas
+
+**Contribuições para o Projeto**
+- Submissão de correções de bugs através de Pull Requests
+- Sugestões de melhorias e novas funcionalidades
+- Participação em discussões técnicas do projeto
+- Relatório de vulnerabilidades de segurança
+
+## Restrições de Uso
+
+As seguintes atividades são expressamente proibidas:
+
+**Uso Comercial Não Autorizado**
+- Venda, revenda ou distribuição comercial do software
+- Uso em produtos ou serviços comerciais sem licença apropriada
+- Integração em soluções comerciais sem autorização expressa
+- Oferecimento de serviços baseados neste software sem licenciamento
+
+**Modificações Não Autorizadas**
+- Remoção ou alteração de avisos de copyright e propriedade intelectual
+- Modificação ou remoção da pasta de proteção (.asc/) e seus conteúdos
+- Alteração de metadados do projeto incluindo nome, autor e informações de versão
+- Desabilitação ou contorno dos sistemas de verificação de integridade
+
+**Distribuição de Obras Derivadas**
+- Criação de versões modificadas para distribuição pública
+- Desenvolvimento de produtos derivados para fins comerciais
+- Redistribuição com alterações não autorizadas
+- Ofuscação intencional do código fonte ou sistemas de proteção
+
+## Licenciamento Comercial
+
+Para uso comercial deste software, é necessário obter uma licença comercial apropriada. As licenças comerciais incluem:
+
+- Direitos de uso em ambientes de produção comercial
+- Suporte técnico dedicado e prioritário
+- Atualizações e patches de segurança
+- Consultoria para implementação e integração
+- Garantias de funcionamento e suporte legal
+
+Para informações sobre licenciamento comercial, entre em contato através de contato.asynccypher@gmail.com.
+
+## Proteção de Propriedade Intelectual
+
+Este software incorpora sistemas automatizados de proteção de propriedade intelectual que:
+
+- Monitoram a integridade dos arquivos críticos do sistema
+- Detectam modificações não autorizadas em componentes protegidos
+- Registram tentativas de violação dos termos de licença
+- Podem resultar em funcionamento degradado se adulterado
+
+A interferência com estes sistemas constitui violação dos termos desta licença.
+
+## Consequências de Violação
+
+Violações dos termos desta licença podem resultar em:
+
+**Ações Legais**
+- Processo judicial por violação de direitos autorais
+- Busca por danos materiais e morais
+- Medidas cautelares para cessação do uso não autorizado
+
+**Penalidades Administrativas**
+- Revogação permanente dos direitos de uso
+- Inclusão em lista de usuários com restrições
+- Notificação a terceiros sobre violações identificadas
+
+**Responsabilidades Financeiras**
+- Pagamento de royalties retroativos por uso comercial não licenciado
+- Custos legais e administrativos relacionados à violação
+- Danos diretos e indiretos causados pelo uso inadequado
+
+## Isenção de Garantias
+
+Este software é fornecido "as is", sem garantias expressas ou implícitas de qualquer natureza. O autor não se responsabiliza por:
+
+- Funcionamento adequado em todos os ambientes
+- Compatibilidade com sistemas específicos
+- Perdas de dados ou interrupções de serviço
+- Danos diretos ou indiretos decorrentes do uso
+
+## Informações de Contato
+
+**Desenvolvedor:** AsyncCypher  
+**Email:** contato.asynccypher@gmail.com  
+**Repositório:** https://github.com/CypherASC/asc-authentication-system  
+
+**Licença Base:** Creative Commons BY-NC-ND 4.0  
+**URL da Licença:** https://creativecommons.org/licenses/by-nc-nd/4.0/  
+
+## Vigência e Alterações
+
+Esta licença permanece em vigor enquanto o software for utilizado. O autor reserva-se o direito de alterar os termos desta licença para versões futuras do software, sendo que tais alterações não afetarão retroativamente os direitos já concedidos.
+
+**Última atualização:** Novembro de 2025  
+**Versão da licença:** 1.0

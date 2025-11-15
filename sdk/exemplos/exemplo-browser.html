@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASC SDK - Exemplo Browser</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        input { width: 100%; padding: 10px; margin-top: 5px; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; cursor: pointer; margin-right: 10px; }
+        .resultado { margin-top: 20px; padding: 10px; background: #f8f9fa; border-radius: 5px; }
+        .usuario-info { background: #d4edda; padding: 15px; border-radius: 5px; margin: 15px 0; }
+    </style>
+</head>
+<body>
+    <h1>ASC SDK - Exemplo Browser</h1>
+
+    <!-- Área de Login -->
+    <div id="loginArea">
+        <h2>Login</h2>
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="email" id="email" value="teste@exemplo.com">
+        </div>
+        <div class="form-group">
+            <label>Senha:</label>
+            <input type="password" id="senha" value="MinhaSenh@123">
+        </div>
+        <button onclick="fazerLogin()">Login</button>
+        <button onclick="registrarUsuario()">Registrar</button>
+    </div>
+
+    <!-- Área Autenticada -->
+    <div id="areaAutenticada" style="display: none;">
+        <div class="usuario-info">
+            <h2>Usuário Autenticado</h2>
+            <p><strong>Nome:</strong> <span id="nomeUsuario"></span></p>
+            <p><strong>Email:</strong> <span id="emailUsuario"></span></p>
+        </div>
+        
+        <h3>Ações Disponíveis</h3>
+        <button onclick="obterPerfil()">Obter Perfil</button>
+        <button onclick="obterSessoes()">Listar Sessões</button>
+        <button onclick="obterEstatisticas()">Estatísticas</button>
+        <button onclick="alterarSenha()">Alterar Senha</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <div id="resultado" class="resultado"></div>
+
+    <!-- Incluir SDK -->
+    <script src="../asc-sdk.js"></script>
+    
+    <script>
+        // Inicializar SDK
+        const asc = new ASCSDK({
+            baseURL: 'http://localhost:3000',
+            timeout: 30000
+        });
+
+        // Variável global para armazenar dados do usuário
+        let usuarioAtual = null;
+
+        // Função para mostrar resultados
+        function mostrarResultado(dados, tipo = 'info') {
+            const elemento = document.getElementById('resultado');
+            const cor = tipo === 'error' ? '#f8d7da' : '#d4edda';
+            elemento.style.backgroundColor = cor;
+            elemento.innerHTML = `<pre>${JSON.stringify(dados, null, 2)}</pre>`;
+        }
+
+        // Função para alternar entre áreas
+        function alternarArea(autenticado) {
+            document.getElementById('loginArea').style.display = autenticado ? 'none' : 'block';
+            document.getElementById('areaAutenticada').style.display = autenticado ? 'block' : 'none';
+        }
+
+        // Registrar usuário
+        async function registrarUsuario() {
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+
+            try {
+                const usuario = await asc.registrar({
+                    nome: 'Usuário Teste',
+                    email: email,
+                    senha: senha
+                });
+
+                mostrarResultado({
+                    sucesso: true,
+                    mensagem: 'Usuário registrado com sucesso',
+                    usuario: usuario
+                });
+            } catch (error) {
+                mostrarResultado({
+                    sucesso: false,
+                    mensagem: error.message,
+                    codigo: error.codigo
+                }, 'error');
+            }
+        }
+
+        // Fazer login
+        async function fazerLogin() {
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+
+            try {
+                const sessao = await asc.login(email, senha);
+                usuarioAtual = sessao.usuario;
+
+                // Atualizar interface
+                document.getElementById('nomeUsuario').textContent = usuarioAtual.nome;
+                document.getElementById('emailUsuario').textContent = usuarioAtual.email;
+                
+                alternarArea(true);
+                mostrarResultado({
+                    sucesso: true,
+                    mensagem: 'Login realizado com sucesso',
+                    token: asc.obterToken().substring(0, 20) + '...',
+                    usuario: usuarioAtual
+                });
+            } catch (error) {
+                mostrarResultado({
+                    sucesso: false,
+                    mensagem: error.message,
+                    codigo: error.codigo
+                }, 'error');
+            }
+        }
+
+        // Obter perfil
+        async function obterPerfil() {
+            try {
+                const perfil = await asc.obterPerfil();
+                mostrarResultado({
+                    sucesso: true,
+                    mensagem: 'Perfil obtido com sucesso',
+                    perfil: perfil
+                });
+            } catch (error) {
+                mostrarResultado({
+                    sucesso: false,
+                    mensagem: error.message
+                }, 'error');
+            }
+        }
+
+        // Obter sessões
+        async function obterSessoes() {
+            try {
+                const sessoes = await asc.obterSessoes();
+                mostrarResultado({
+                    sucesso: true,
+                    mensagem: `${sessoes.length} sessões encontradas`,
+                    sessoes: sessoes
+                });
+            } catch (error) {
+                mostrarResultado({
+                    sucesso: false,
+                    mensagem: error.message
+                }, 'error');
+            }
+        }
+
+        // Obter estatísticas
+        async function obterEstatisticas() {
+            try {
+                const stats = await asc.obterEstatisticasSessao();
+                mostrarResultado({
+                    sucesso: true,
+                    mensagem: 'Estatísticas obtidas com sucesso',
+                    estatisticas: stats
+                });
+            } catch (error) {
+                mostrarResultado({
+                    sucesso: false,
+                    mensagem: error.message
+                }, 'error');
+            }
+        }
+
+        // Alterar senha
+        async function alterarSenha() {
+            const senhaAtual = prompt('Digite sua senha atual:');
+            const novaSenha = prompt('Digite a nova senha:');
+
+            if (senhaAtual && novaSenha) {
+                try {
+                    await asc.alterarSenha(senhaAtual, novaSenha);
+                    mostrarResultado({
+                        sucesso: true,
+                        mensagem: 'Senha alterada com sucesso'
+                    });
+                } catch (error) {
+                    mostrarResultado({
+                        sucesso: false,
+                        mensagem: error.message
+                    }, 'error');
+                }
+            }
+        }
+
+        // Fazer logout
+        async function logout() {
+            try {
+                await asc.logout();
+                usuarioAtual = null;
+                
+                alternarArea(false);
+                mostrarResultado({
+                    sucesso: true,
+                    mensagem: 'Logout realizado com sucesso'
+                });
+            } catch (error) {
+                mostrarResultado({
+                    sucesso: false,
+                    mensagem: error.message
+                }, 'error');
+            }
+        }
+
+        // Verificar se já existe token ao carregar a página
+        window.addEventListener('load', async () => {
+            const token = localStorage.getItem('asc_token');
+            if (token) {
+                asc.definirToken(token);
+                try {
+                    const perfil = await asc.obterPerfil();
+                    usuarioAtual = perfil;
+                    
+                    document.getElementById('nomeUsuario').textContent = perfil.nome;
+                    document.getElementById('emailUsuario').textContent = perfil.email;
+                    
+                    alternarArea(true);
+                } catch (error) {
+                    localStorage.removeItem('asc_token');
+                }
+            }
+        });
+
+        // Salvar token no localStorage após login bem-sucedido
+        asc.adicionarInterceptadorResposta((dados, resposta) => {
+            if (dados.sucesso && dados.dados && dados.dados.token) {
+                localStorage.setItem('asc_token', dados.dados.token);
+            }
+        });
+    </script>
+</body>
+</html>
