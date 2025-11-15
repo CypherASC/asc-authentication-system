@@ -1,3 +1,6 @@
+<img width="1000" height="1200" alt="asc23" src="https://github.com/user-attachments/assets/d7a690e2-d49f-4a0f-b591-f7ff9532eb4e" />
+
+
 # ASC (AsyncSystemCaption) - Sistema de Autenticação Empresarial
 
 Sistema Avançado de Segurança e Autenticação para Aplicações Empresariais desenvolvido por AsyncCypher.
