@@ -112,3 +112,33 @@ Thumbs.db
 testes/dados-*
 testes/config-*
 testes/*.tmp
+
+# Arquivos de backup do .env
+.env.backup*
+*.backup
+
+# Bancos de dados locais
+*.db
+*.sqlite
+*.sqlite3
+database.*
+
+# Certificados e chaves
+*.crt
+*.cert
+*.p12
+*.pfx
+
+# Arquivos temporários do sistema
+*.bak
+*.old
+*.orig
+
+# Relatórios de configuração
+logs/relatorio-*
+logs/*.json
+
+# Scripts de limpeza locais (não devem ir para GitHub)
+scripts/limpar-*
+scripts/pre-commit*
+scripts/*-local*

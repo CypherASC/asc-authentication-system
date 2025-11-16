@@ -8,10 +8,11 @@
 
 class ASCSDK {
   constructor(configuracao = {}) {
-    this.baseURL = configuracao.baseURL || '';
-    this.apiKey = configuracao.apiKey || null;
-    this.timeout = configuracao.timeout || 30000;
+    this.baseURL = configuracao.baseURL || 'http://localhost:3000';
+    this.timeout = configuracao.timeout || 10000;
     this.token = configuracao.token || null;
+    this.debug = configuracao.debug || false;
+    this.modoSimples = configuracao.modoSimples !== false; // Ativo por padrão
     this.interceptadores = {
       requisicao: [],
       resposta: []
@@ -44,7 +45,6 @@ class ASCSDK {
         'Content-Type': 'application/json',
         ...opcoes.headers
       },
-      timeout: this.timeout,
       ...opcoes
     };
 
@@ -53,18 +53,17 @@ class ASCSDK {
       Object.assign(config, interceptador(config));
     }
 
+    if (this.debug) {
+      console.log(`ASC Request: ${config.method} ${url}`, config);
+    }
+
     try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), this.timeout);
-
-      const resposta = await fetch(url, {
-        ...config,
-        signal: controller.signal
-      });
-
-      clearTimeout(timeoutId);
-
+      const resposta = await fetch(url, config);
       const dados = await resposta.json();
+
+      if (this.debug) {
+        console.log(`ASC Response:`, dados);
+      }
 
       // Aplicar interceptadores de resposta
       for (const interceptador of this.interceptadores.resposta) {
@@ -77,29 +76,46 @@ class ASCSDK {
 
       return dados;
     } catch (error) {
-      if (error.name === 'AbortError') {
-        throw new ASCError('Timeout na requisição', 408);
+      if (this.debug) {
+        console.error('ASC Error:', error);
       }
-      throw error;
+      if (error instanceof ASCError) {
+        throw error;
+      }
+      throw new ASCError(error.message || 'Erro de conexão', 500);
     }
   }
 
   // Métodos de Autenticação
   async registrar(dadosUsuario) {
+    // Adicionar campos honeypot automaticamente no modo simples
+    const payload = this.modoSimples ? {
+      ...dadosUsuario,
+      email_confirmacao: '',
+      website: '',
+      numero_telefone: '',
+      timestamp: Date.now().toString()
+    } : dadosUsuario;
+
     const dados = await this.requisicao('/api/autenticacao/registro', {
       method: 'POST',
-      body: JSON.stringify(dadosUsuario)
+      body: JSON.stringify(payload)
     });
 
-    return new UsuarioASC(dados.dados, this);
+    return this.modoSimples ? dados.dados : new UsuarioASC(dados.dados, this);
   }
 
   async login(email, senha, opcoes = {}) {
-    const payload = {
+    // Adicionar campos honeypot automaticamente no modo simples
+    const payload = this.modoSimples ? {
       email,
       senha,
+      email_confirmacao: '',
+      website: '',
+      numero_telefone: '',
+      timestamp: Date.now().toString(),
       ...opcoes
-    };
+    } : { email, senha, ...opcoes };
 
     const dados = await this.requisicao('/api/autenticacao/login', {
       method: 'POST',
@@ -107,7 +123,7 @@ class ASCSDK {
     });
 
     this.token = dados.dados.token;
-    return new SessaoASC(dados.dados, this);
+    return this.modoSimples ? dados.dados : new SessaoASC(dados.dados, this);
   }
 
   async logout() {
@@ -136,7 +152,7 @@ class ASCSDK {
   // Métodos de Usuário
   async obterPerfil() {
     const dados = await this.requisicao('/api/usuario/perfil');
-    return new UsuarioASC(dados.dados, this);
+    return this.modoSimples ? dados.dados : new UsuarioASC(dados.dados, this);
   }
 
   async atualizarPerfil(atualizacoes) {
@@ -145,7 +161,7 @@ class ASCSDK {
       body: JSON.stringify(atualizacoes)
     });
 
-    return new UsuarioASC(dados.dados, this);
+    return this.modoSimples ? dados.dados : new UsuarioASC(dados.dados, this);
   }
 
   async alterarSenha(senhaAtual, novaSenha) {
@@ -164,7 +180,7 @@ class ASCSDK {
   // Métodos de Sessão
   async obterSessoes() {
     const dados = await this.requisicao('/api/usuario/sessoes');
-    return dados.dados.map(sessao => new SessaoASC(sessao, this));
+    return this.modoSimples ? dados.dados : dados.dados.map(sessao => new SessaoASC(sessao, this));
   }
 
   async encerrarSessao(idSessao) {
@@ -195,12 +211,34 @@ class ASCSDK {
     return this.token;
   }
 
+  estaLogado() {
+    return !!this.token;
+  }
+
+  limparToken() {
+    this.token = null;
+  }
+
+  // Alternar entre modo simples e avançado
+  ativarModoSimples() {
+    this.modoSimples = true;
+  }
+
+  ativarModoAvancado() {
+    this.modoSimples = false;
+  }
+
   adicionarInterceptadorRequisicao(interceptador) {
     this.interceptadores.requisicao.push(interceptador);
   }
 
   adicionarInterceptadorResposta(interceptador) {
     this.interceptadores.resposta.push(interceptador);
+  }
+
+  // Função helper para criar instância rapidamente
+  static criar(opcoes = {}) {
+    return new ASCSDK({ modoSimples: true, ...opcoes });
   }
 }
 

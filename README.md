@@ -1,181 +1,451 @@
 # ASC (AsyncSystemCaption) - Sistema de Autenticação Empresarial
 
+<img width="1000" height="1200" alt="asc23" src="https://github.com/user-attachments/assets/d7a690e2-d49f-4a0f-b591-f7ff9532eb4e" />
+
 Sistema Avançado de Segurança e Autenticação para Aplicações Empresariais desenvolvido por AsyncCypher.
+
+## Início Rápido
+
+```bash
+# 1. Clone e instale
+git clone https://github.com/CypherASC/asc-authentication-system.git
+cd asc-authentication-system
+npm install
+
+# 2. Execute (funciona sem configuração)
+npm start
+
+# 3. Teste
+curl http://localhost:3000/status
+```
+
+## Índice
+
+- [Visão Geral](#visão-geral)
+- [Instalação](#instalação)
+- [Modos de Operação](#modos-de-operação)
+- [API Completa](#api-completa)
+- [SDK Cliente](#sdk-cliente)
+- [Configuração](#configuração)
+- [Segurança](#segurança)
+- [Arquitetura](#arquitetura)
 
 ## Visão Geral
 
-O ASC é uma solução completa de autenticação que combina segurança avançada com facilidade de integração. Desenvolvido especificamente para aplicações empresariais que necessitam de proteção robusta contra ameaças modernas, o sistema oferece recursos como detecção de anomalias baseada em machine learning, proteção contra bots e fingerprinting de dispositivos.
+O ASC é uma solução completa de autenticação que combina segurança avançada com facilidade de integração. Oferece dois modos de operação: **ASC Simples** para controle total e **ASC Automático** para configuração zero.
 
-## Características Principais
+### Características Principais
 
-### Segurança Avançada
-O sistema implementa múltiplas camadas de proteção, incluindo detecção de anomalias que identifica comportamentos suspeitos em tempo real, sistema honeypot para capturar bots automaticamente, e fingerprinting de dispositivos que permite identificação única sem depender de cookies. A proteção contra ataques de força bruta é implementada através de limitação de taxa progressiva, enquanto todos os dados sensíveis são protegidos com criptografia AES-256.
+- **Segurança Avançada**: Detecção de anomalias, sistema honeypot, fingerprinting de dispositivos
+- **Integração Universal**: Adaptadores para PostgreSQL, MySQL, MongoDB, SQLite, Redis
+- **Zero Configuração**: Modo automático que detecta e configura o ambiente
+- **API RESTful**: Endpoints padronizados e bem documentados
+- **SDK Cliente**: JavaScript/TypeScript para frontend
+- **Monitoramento**: Logs estruturados e métricas de segurança
 
-### Integração Universal
-Projetado para máxima compatibilidade, o ASC oferece adaptadores para os principais bancos de dados incluindo PostgreSQL, MySQL, MongoDB, SQLite e Redis. A API RESTful completa fornece endpoints padronizados e bem documentados, enquanto o sistema de middlewares modulares facilita a integração com Express.js e frameworks similares. A validação robusta de dados utiliza Joi com sanitização automática.
-
-### Monitoramento e Auditoria
-Sistema completo de logging centralizado e estruturado registra todas as atividades do sistema. A auditoria completa rastreia todas as ações dos usuários, fornecendo métricas de segurança em tempo real sobre tentativas de ataque. Alertas automáticos notificam sobre atividades suspeitas, permitindo resposta rápida a possíveis ameaças.
-
-## Arquitetura do Sistema
-
-```
-src/
-├── nucleo/                    # Componentes fundamentais do sistema
-│   ├── motor-asc.js          # Motor principal de autenticação
-│   ├── verificador-integridade.js
-│   └── validador-licenca.js
-├── adaptadores/              # Interfaces de banco de dados
-│   ├── AdaptadorBancoDados.js
-│   ├── AdaptadorMemoria.js
-│   └── postgresql/
-├── servicos/                 # Lógica de negócio
-│   ├── ServicoAutenticacao.js
-│   ├── ServicoToken.js
-│   └── ServicoSessao.js
-├── seguranca/               # Módulos de segurança avançada
-│   ├── detector-anomalias.js
-│   ├── sistema-honeypot.js
-│   └── fingerprint-dispositivo.js
-├── middlewares/             # Middlewares Express
-│   ├── autenticacao.js
-│   ├── limitador-taxa.js
-│   └── validador.js
-└── rotas/                   # Endpoints da API
-    ├── autenticacao.js
-    ├── usuario.js
-    └── sessao.js
-```
-
-## Instalação e Configuração
+## Instalação
 
 ### Requisitos
-- Node.js versão 16 ou superior
-- Banco de dados suportado (opcional para desenvolvimento)
+- Node.js 16+ 
+- Banco de dados (opcional - usa memória por padrão)
 
 ### Instalação Básica
-
 ```bash
 git clone https://github.com/CypherASC/asc-authentication-system.git
 cd asc-authentication-system
 npm install
 ```
 
-### Configuração Inicial
-O sistema funciona imediatamente após a instalação usando um adaptador de memória para desenvolvimento. Para produção, configure as variáveis de ambiente apropriadas.
+### Scripts Disponíveis
+```bash
+npm start          # Inicia servidor principal (porta 3000)
+npm run dev        # Modo desenvolvimento com nodemon
+npm run auto       # Modo automático (zero configuração)
+npm run configurar # Script de configuração interativa
+```
 
-## Uso da API
+## Modos de Operação
 
-### Exemplo Básico
+### ASC Simples - Controle Total
+
+Para projetos que precisam de configuração específica:
 
 ```javascript
-// Registro de usuário
-const resposta = await fetch('/api/autenticacao/registro', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    nome: 'João Silva',
-    email: 'joao@exemplo.com',
-    senha: 'MinhaSenh@123'
-  })
+const ASCSimples = require('./api/asc-simples');
+
+// Configuração personalizada
+const asc = new ASCSimples({
+  porta: 3000,
+  cors: true,
+  logs: true
+});
+
+// Iniciar servidor
+await asc.iniciarServidor();
+```
+
+#### Métodos Disponíveis
+
+##### `constructor(opcoes)`
+Cria nova instância do ASC Simples.
+```javascript
+const opcoes = {
+  porta: 3000,        // Porta do servidor (padrão: 3000)
+  cors: true,         // Habilitar CORS (padrão: true)
+  logs: true          // Habilitar logs (padrão: true)
+};
+```
+
+##### `async registrar(email, senha, nome, req)`
+Registra novo usuário no sistema.
+```javascript
+const resultado = await asc.registrar(
+  'usuario@exemplo.com',
+  'MinhaSenh@123',
+  'João Silva',
+  { ip: '192.168.1.1', headers: req.headers }
+);
+// Retorna: { id, email, token, refreshToken }
+```
+
+##### `async login(email, senha, req)`
+Autentica usuário existente.
+```javascript
+const resultado = await asc.login(
+  'usuario@exemplo.com',
+  'MinhaSenh@123',
+  { ip: '192.168.1.1', headers: req.headers }
+);
+// Retorna: { token, refreshToken, usuario }
+```
+
+##### `async verificarToken(token)`
+Verifica validade de token JWT.
+```javascript
+const verificacao = await asc.verificarToken('jwt-token-aqui');
+// Retorna: { valido: true/false, usuario: {...}, erro?: string }
+```
+
+##### `async logout(token, req)`
+Revoga token e encerra sessão.
+```javascript
+await asc.logout('jwt-token-aqui', { ip: '192.168.1.1' });
+// Retorna: { sucesso: true }
+```
+
+##### `async renovarToken(refreshToken, req)`
+Renova token usando refresh token.
+```javascript
+const novoToken = await asc.renovarToken('refresh-token-aqui', req);
+// Retorna: { token, refreshToken }
+```
+
+##### `middleware()`
+Middleware Express para proteger rotas.
+```javascript
+const app = express();
+app.get('/protegida', asc.middleware(), (req, res) => {
+  // req.usuario contém dados do usuário autenticado
+  res.json({ usuario: req.usuario });
+});
+```
+
+### ASC Automático - Zero Configuração
+
+Para deploy rápido e desenvolvimento:
+
+```javascript
+const ASCAutomatico = require('./api/asc-automatico');
+
+// Inicialização automática
+await ASCAutomatico.iniciar();
+```
+
+#### Detecção Automática
+
+O ASC Automático detecta automaticamente:
+
+- **Banco de Dados**: PostgreSQL, MongoDB, MySQL, SQLite ou Memória
+- **Porta**: `PORT`, `PORTA`, `SERVER_PORT` ou 3000
+- **CORS**: Baseado no ambiente (dev/prod)
+- **SSL**: Certificados ou variáveis de ambiente
+
+#### Variáveis de Ambiente Suportadas
+```bash
+# Banco de dados
+DATABASE_URL=postgresql://user:pass@host:5432/db
+MONGODB_URI=mongodb://localhost:27017/asc
+MYSQL_URL=mysql://user:pass@host:3306/db
+
+# Servidor
+PORT=3000
+CORS_ORIGIN=http://localhost:3000,http://localhost:3001
+
+# SSL
+SSL_CERT=/path/to/cert.pem
+SSL_KEY=/path/to/key.pem
+HTTPS=true
+```
+
+## API Completa
+
+### Endpoints de Autenticação
+
+#### `POST /registro`
+Registra novo usuário.
+```javascript
+// Requisição
+{
+  "nome": "João Silva",
+  "email": "joao@exemplo.com",
+  "senha": "MinhaSenh@123"
+}
+
+// Resposta
+{
+  "sucesso": true,
+  "dados": {
+    "id": "uuid-do-usuario",
+    "email": "joao@exemplo.com",
+    "token": "jwt-token",
+    "refreshToken": "refresh-token"
+  }
+}
+```
+
+#### `POST /login`
+Autentica usuário.
+```javascript
+// Requisição
+{
+  "email": "joao@exemplo.com",
+  "senha": "MinhaSenh@123"
+}
+
+// Resposta
+{
+  "sucesso": true,
+  "dados": {
+    "token": "jwt-token",
+    "refreshToken": "refresh-token",
+    "usuario": {
+      "id": "uuid",
+      "email": "joao@exemplo.com",
+      "nome": "João Silva"
+    }
+  }
+}
+```
+
+#### `POST /logout`
+Encerra sessão (requer token).
+```javascript
+// Headers
+Authorization: Bearer jwt-token
+
+// Resposta
+{
+  "sucesso": true,
+  "mensagem": "Logout realizado"
+}
+```
+
+#### `POST /renovar`
+Renova token usando refresh token.
+```javascript
+// Requisição
+{
+  "refreshToken": "refresh-token-aqui"
+}
+
+// Resposta
+{
+  "sucesso": true,
+  "dados": {
+    "token": "novo-jwt-token",
+    "refreshToken": "novo-refresh-token"
+  }
+}
+```
+
+### Endpoints Protegidos
+
+#### `GET /perfil`
+Obtém perfil do usuário autenticado.
+```javascript
+// Headers
+Authorization: Bearer jwt-token
+
+// Resposta
+{
+  "sucesso": true,
+  "usuario": {
+    "id": "uuid",
+    "email": "joao@exemplo.com",
+    "nome": "João Silva"
+  }
+}
+```
+
+### Endpoints Utilitários
+
+#### `GET /status`
+Verifica status do sistema.
+```javascript
+// Resposta
+{
+  "sucesso": true,
+  "status": "ativo",
+  "versao": "1.0.0",
+  "timestamp": "2025-01-15T10:30:00.000Z",
+  "sistema": "ASC - AsyncSystemCaption"
+}
+```
+
+#### `GET /honeypot`
+Obtém campos honeypot para formulários.
+```javascript
+// Resposta
+{
+  "sucesso": true,
+  "dados": {
+    "email_confirmacao": "",
+    "website": "",
+    "numero_telefone": ""
+  }
+}
+```
+
+## SDK Cliente
+
+### Instalação
+```bash
+npm install ./sdk
+```
+
+### Uso Básico
+```javascript
+const ASCSDK = require('asc-sdk');
+
+const asc = new ASCSDK({
+  baseURL: 'http://localhost:3000'
+});
+
+// Registro
+const registro = await asc.registrar({
+  nome: 'João Silva',
+  email: 'joao@exemplo.com',
+  senha: 'MinhaSenh@123'
 });
 
 // Login
-const login = await fetch('/api/autenticacao/login', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    email: 'joao@exemplo.com',
-    senha: 'MinhaSenh@123'
-  })
-});
+const login = await asc.login('joao@exemplo.com', 'MinhaSenh@123');
 
-const { token } = await login.json();
+// Usar token automaticamente
+const perfil = await asc.obterPerfil();
 
-// Usar token em requisições protegidas
-const perfil = await fetch('/api/usuario/perfil', {
-  headers: { 'Authorization': `Bearer ${token}` }
+// Logout
+await asc.logout();
+```
+
+### Métodos do SDK
+
+#### `async registrar(dados)`
+```javascript
+const resultado = await asc.registrar({
+  nome: 'Nome Completo',
+  email: 'email@exemplo.com',
+  senha: 'SenhaSegura123'
 });
 ```
 
-### Endpoints Disponíveis
+#### `async login(email, senha)`
+```javascript
+const resultado = await asc.login('email@exemplo.com', 'senha');
+// Token é armazenado automaticamente
+```
 
-### Autenticação
-- `POST /api/autenticacao/registro` - Registrar novo usuário
-- `POST /api/autenticacao/login` - Fazer login
-- `POST /api/autenticacao/logout` - Fazer logout
-- `POST /api/autenticacao/renovar` - Renovar token
-- `GET /api/autenticacao/honeypot` - Obter campos honeypot
+#### `async obterPerfil()`
+```javascript
+const perfil = await asc.obterPerfil();
+// Usa token armazenado automaticamente
+```
 
-### Usuário
-- `GET /api/usuario/perfil` - Obter perfil do usuário
-- `PUT /api/usuario/perfil` - Atualizar perfil
-- `POST /api/usuario/alterar-senha` - Alterar senha
-- `GET /api/usuario/sessoes` - Listar sessões ativas
-- `DELETE /api/usuario/sessoes/:id` - Encerrar sessão específica
+#### `async logout()`
+```javascript
+await asc.logout();
+// Remove token armazenado
+```
 
-### Sessão
-- `GET /api/sessao/info` - Informações da sessão atual
-- `POST /api/sessao/renovar-tempo` - Renovar tempo de expiração
-- `GET /api/sessao/estatisticas` - Estatísticas de sessões
-- `GET /api/sessao/dispositivos` - Listar dispositivos únicos
+#### `async renovarToken()`
+```javascript
+const novoToken = await asc.renovarToken();
+// Atualiza token automaticamente
+```
 
-## Configuração Avançada
+## Configuração
 
-### Variáveis de Ambiente
-
+### Desenvolvimento
+Funciona sem configuração:
 ```bash
-# Servidor
-PORTA=3000
+npm start  # Funciona direto na porta 3000
+```
+
+### Produção
+Configuração obrigatória por segurança:
+```bash
+# Criar arquivo .env
+CHAVE_SECRETA=sua-chave-secreta-de-64-caracteres-minimo
+DATABASE_URL=postgresql://user:pass@host:5432/database
 NODE_ENV=production
 
+# Iniciar
+npm start
+```
+
+### Variáveis de Ambiente
+```bash
+# Essenciais
+CHAVE_SECRETA=chave-jwt-secreta
+NODE_ENV=development|production
+
+# Banco de dados
+DATABASE_URL=postgresql://...
+MONGODB_URI=mongodb://...
+MYSQL_URL=mysql://...
+
+# Servidor
+PORTA=3000
+CORS_ORIGIN=http://localhost:3000
+
 # Segurança
-CHAVE_SECRETA=sua-chave-secreta-super-segura
-NIVEL_LOG=info
-
-# Banco de Dados (exemplo PostgreSQL)
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=asc_auth
-DB_USER=usuario
-DB_PASS=senha
+SSL_CERT=/path/to/cert.pem
+SSL_KEY=/path/to/key.pem
 ```
 
-### Adaptadores de Banco de Dados
+## Segurança
 
-```javascript
-// PostgreSQL
-const AdaptadorPostgreSQL = require('./src/adaptadores/postgresql/PostgreSQLAdapter');
-const adaptador = new AdaptadorPostgreSQL({
-  host: 'localhost',
-  port: 5432,
-  database: 'asc_auth',
-  user: 'usuario',
-  password: 'senha'
-});
+### Recursos de Proteção
 
-// MongoDB
-const AdaptadorMongoDB = require('./src/adaptadores/mongodb/MongoDBAdapter');
-const adaptador = new AdaptadorMongoDB({
-  uri: 'mongodb://localhost:27017/asc_auth'
-});
-```
+#### Detecção de Anomalias
+- Logins de localizações incomuns
+- Acessos em horários atípicos
+- Dispositivos não reconhecidos
+- Viagens geograficamente impossíveis
 
-## Recursos de Segurança
+#### Sistema Honeypot
+- Campos invisíveis em formulários
+- Detecção de bots automatizados
+- Preenchimento excessivamente rápido
+- IPs maliciosos conhecidos
 
-### Detecção de Anomalias
-O sistema analisa continuamente padrões de comportamento dos usuários, identificando automaticamente logins de localizações incomuns, acessos em horários atípicos, dispositivos não reconhecidos, e viagens geograficamente impossíveis. Algoritmos de machine learning detectam padrões de comportamento suspeitos em tempo real.
+#### Fingerprinting de Dispositivos
+- User-Agent e cabeçalhos HTTP
+- Resolução de tela e fuso horário
+- Fingerprints Canvas e WebGL
+- Características de hardware
 
-### Sistema Honeypot
-Implementação de campos invisíveis em formulários que detectam bots automatizados, preenchimento excessivamente rápido de formulários, padrões sequenciais de preenchimento, e IPs previamente identificados como maliciosos.
-
-### Fingerprinting de Dispositivos
-Identificação única de dispositivos baseada em múltiplos fatores incluindo User-Agent e cabeçalhos HTTP, resolução de tela e configurações de fuso horário, fingerprints de Canvas e WebGL, características específicas de hardware, e plugins e fontes instaladas no sistema.
-
-## Monitoramento e Logs
-
-### Estrutura de Logs
-O sistema gera logs estruturados em formato JSON para facilitar análise e integração com ferramentas de monitoramento:
+### Logs de Segurança
 ```json
 {
   "timestamp": "2025-01-15T10:30:00.000Z",
@@ -183,35 +453,129 @@ O sistema gera logs estruturados em formato JSON para facilitar análise e integ
   "mensagem": "Login realizado com sucesso",
   "idUsuario": "uuid-do-usuario",
   "ip": "192.168.1.100",
-  "riskLevel": "LOW",
+  "nivelRisco": "BAIXO",
   "anomalias": []
 }
 ```
 
-### Métricas de Segurança
-Acompanhamento em tempo real de tentativas de login por minuto, IPs bloqueados automaticamente, anomalias detectadas pelo sistema, tokens revogados por motivos de segurança, e sessões ativas por usuário.
+## Arquitetura
+
+### Estrutura do Projeto
+```
+api seguranca/
+├── api/                    # Código principal
+│   ├── nucleo/            # Motor ASC e verificador
+│   ├── servicos/          # Lógica de negócio
+│   ├── adaptadores/       # Interfaces de banco
+│   ├── seguranca/         # Módulos de segurança
+│   ├── middlewares/       # Middlewares Express
+│   ├── rotas/             # Endpoints da API
+│   ├── controladores/     # Controladores
+│   ├── configuracao/      # Configurações
+│   └── utilitarios/       # Utilitários
+├── exemplos/              # Exemplos de uso
+├── scripts/               # Scripts de configuração
+├── sdk/                   # SDK cliente
+├── logs/                  # Arquivos de log
+└── servidor.js           # Ponto de entrada
+```
+
+### Adaptadores de Banco
+
+#### PostgreSQL
+```javascript
+const AdaptadorPostgreSQL = require('./api/adaptadores/postgresql/PostgreSQLAdapter');
+const adaptador = new AdaptadorPostgreSQL({
+  host: 'localhost',
+  port: 5432,
+  database: 'asc_auth',
+  user: 'usuario',
+  password: 'senha'
+});
+```
+
+#### MongoDB
+```javascript
+const AdaptadorMongoDB = require('./api/adaptadores/mongodb/MongoDBAdapter');
+const adaptador = new AdaptadorMongoDB({
+  uri: 'mongodb://localhost:27017/asc_auth'
+});
+```
+
+#### Memória (Padrão)
+```javascript
+const AdaptadorMemoria = require('./api/adaptadores/AdaptadorMemoria');
+const adaptador = new AdaptadorMemoria();
+// Dados perdidos ao reiniciar - apenas desenvolvimento
+```
+
+## Exemplos de Integração
+
+### Express.js Básico
+```javascript
+const express = require('express');
+const ASCSimples = require('./api/asc-simples');
+
+const app = express();
+const asc = new ASCSimples();
+
+// Rota protegida
+app.get('/admin', asc.middleware(), (req, res) => {
+  res.json({ 
+    mensagem: 'Área administrativa',
+    usuario: req.usuario 
+  });
+});
+
+await asc.iniciarServidor();
+```
+
+### React Frontend
+```javascript
+import ASCSDK from 'asc-sdk';
+
+const asc = new ASCSDK({
+  baseURL: 'http://localhost:3000'
+});
+
+// Componente de login
+const Login = () => {
+  const handleLogin = async (email, senha) => {
+    try {
+      const resultado = await asc.login(email, senha);
+      console.log('Login realizado:', resultado);
+    } catch (error) {
+      console.error('Erro no login:', error);
+    }
+  };
+};
+```
 
 ## Contribuição
 
-Contribuições são bem-vindas através de Pull Requests. Para contribuir:
-
-1. Faça um fork do projeto
-2. Crie uma branch para sua funcionalidade
-3. Implemente as mudanças com testes apropriados
-4. Envie um Pull Request com descrição detalhada
+1. Fork do projeto
+2. Crie branch para funcionalidade: `git checkout -b nova-funcionalidade`
+3. Commit das mudanças: `git commit -m 'Adiciona nova funcionalidade'`
+4. Push para branch: `git push origin nova-funcionalidade`
+5. Abra Pull Request
 
 ## Licenciamento
 
-Este projeto está licenciado sob Creative Commons BY-NC-ND 4.0, permitindo uso educacional e pessoal, mas restringindo uso comercial sem autorização. Para licenças comerciais, entre em contato através de contato.asynccypher@gmail.com.
+Este projeto está licenciado sob Creative Commons BY-NC-ND 4.0 com termos adicionais específicos.
 
-## Suporte e Contato
+**Uso Permitido:**
+- Educacional e acadêmico
+- Pessoal não comercial
+- Contribuições ao projeto
+
+**Uso Comercial:** Requer licença específica
+
+Para detalhes completos, consulte o arquivo [LICENSE](LICENSE). Para licenciamento comercial: contato.asynccypher@gmail.com
+
+## Suporte
 
 **Desenvolvedor:** AsyncCypher  
 **Email:** contato.asynccypher@gmail.com  
-**Repositório:** https://github.com/CypherASC/asc-authentication-system  
+**Repositório:** https://github.com/CypherASC/asc-authentication-system
 
-Para questões técnicas, abra uma issue no repositório. Para licenças comerciais e suporte dedicado, entre em contato diretamente por email.
-
-## Roadmap de Desenvolvimento
-
-Funcionalidades planejadas incluem suporte a OAuth 2.0 e OpenID Connect, integração com provedores de identidade externos, dashboard web para administração, suporte a autenticação multifator, API GraphQL, métricas avançadas com Prometheus, e containerização com Docker e Kubernetes.
+Para questões técnicas, abra uma issue no repositório.

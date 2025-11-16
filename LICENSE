@@ -8,55 +8,76 @@ Este software está licenciado sob os termos da Creative Commons Attribution-Non
 
 Este software pode ser utilizado nas seguintes condições:
 
-**Uso Educacional e Acadêmico**
+### Uso Educacional e Acadêmico
 - Permitido para fins de ensino, aprendizado e pesquisa acadêmica
 - Uso em instituições educacionais para demonstração e treinamento
 - Análise do código fonte para fins de estudo de arquitetura de software
+- Implementação em projetos acadêmicos e trabalhos de conclusão de curso
 
-**Uso Pessoal Não Comercial**
+### Uso Pessoal Não Comercial
 - Implementação em projetos pessoais sem finalidade comercial
 - Desenvolvimento e teste em ambientes de desenvolvimento local
 - Uso para portfólio pessoal e demonstrações técnicas
+- Experimentação e aprendizado de tecnologias de autenticação
 
-**Contribuições para o Projeto**
+### Contribuições para o Projeto
 - Submissão de correções de bugs através de Pull Requests
 - Sugestões de melhorias e novas funcionalidades
 - Participação em discussões técnicas do projeto
-- Relatório de vulnerabilidades de segurança
+- Relatório de vulnerabilidades de segurança através dos canais apropriados
+- Tradução da documentação para outros idiomas
 
 ## Restrições de Uso
 
 As seguintes atividades são expressamente proibidas:
 
-**Uso Comercial Não Autorizado**
+### Uso Comercial Não Autorizado
 - Venda, revenda ou distribuição comercial do software
 - Uso em produtos ou serviços comerciais sem licença apropriada
 - Integração em soluções comerciais sem autorização expressa
-- Oferecimento de serviços baseados neste software sem licenciamento
+- Oferecimento de serviços baseados neste software sem licenciamento comercial
+- Uso em aplicações que geram receita direta ou indireta
 
-**Modificações Não Autorizadas**
+### Modificações Não Autorizadas
 - Remoção ou alteração de avisos de copyright e propriedade intelectual
-- Modificação ou remoção da pasta de proteção (.asc/) e seus conteúdos
-- Alteração de metadados do projeto incluindo nome, autor e informações de versão
-- Desabilitação ou contorno dos sistemas de verificação de integridade
+- Modificação de metadados do projeto incluindo nome, autor e informações de versão
+- Alteração de sistemas de verificação de integridade e proteção
+- Desabilitação ou contorno de funcionalidades de segurança
+- Ofuscação intencional do código fonte ou sistemas de proteção
 
-**Distribuição de Obras Derivadas**
+### Distribuição de Obras Derivadas
 - Criação de versões modificadas para distribuição pública
 - Desenvolvimento de produtos derivados para fins comerciais
 - Redistribuição com alterações não autorizadas
-- Ofuscação intencional do código fonte ou sistemas de proteção
+- Publicação de forks modificados sem conformidade com esta licença
+- Incorporação em outros projetos sem atribuição adequada
+
+### Atividades Maliciosas
+- Uso para desenvolvimento de malware ou software malicioso
+- Implementação em sistemas destinados a atividades ilegais
+- Violação de privacidade ou segurança de terceiros
+- Contorno de medidas de segurança de outros sistemas
 
 ## Licenciamento Comercial
 
 Para uso comercial deste software, é necessário obter uma licença comercial apropriada. As licenças comerciais incluem:
 
+### Benefícios da Licença Comercial
 - Direitos de uso em ambientes de produção comercial
 - Suporte técnico dedicado e prioritário
-- Atualizações e patches de segurança
+- Atualizações e patches de segurança garantidos
 - Consultoria para implementação e integração
 - Garantias de funcionamento e suporte legal
+- Remoção de restrições de modificação para uso interno
+- Direitos de redistribuição em produtos comerciais
 
-Para informações sobre licenciamento comercial, entre em contato através de contato.asynccypher@gmail.com.
+### Modalidades de Licenciamento
+- **Licença Individual**: Para uma aplicação específica
+- **Licença Corporativa**: Para uso em toda a organização
+- **Licença OEM**: Para incorporação em produtos de terceiros
+- **Licença de Desenvolvimento**: Para equipes de desenvolvimento
+
+Para informações sobre licenciamento comercial e cotações, entre em contato através de contato.asynccypher@gmail.com.
 
 ## Proteção de Propriedade Intelectual
 
@@ -66,27 +87,48 @@ Este software incorpora sistemas automatizados de proteção de propriedade inte
 - Detectam modificações não autorizadas em componentes protegidos
 - Registram tentativas de violação dos termos de licença
 - Podem resultar em funcionamento degradado se adulterado
+- Coletam informações de uso para fins de auditoria de licença
 
-A interferência com estes sistemas constitui violação dos termos desta licença.
+A interferência com estes sistemas constitui violação dos termos desta licença e pode resultar em ações legais.
+
+## Atribuição Obrigatória
+
+Ao usar este software, você deve:
+
+- Manter todos os avisos de copyright e propriedade intelectual
+- Incluir referência ao projeto original em documentação
+- Creditar AsyncCypher como desenvolvedor original
+- Fornecer link para o repositório oficial quando aplicável
+- Não remover ou alterar informações de licenciamento
+
+### Formato de Atribuição Recomendado
+```
+Powered by ASC (AsyncSystemCaption)
+Desenvolvido por AsyncCypher
+https://github.com/CypherASC/asc-authentication-system
+```
 
 ## Consequências de Violação
 
 Violações dos termos desta licença podem resultar em:
 
-**Ações Legais**
+### Ações Legais
 - Processo judicial por violação de direitos autorais
 - Busca por danos materiais e morais
 - Medidas cautelares para cessação do uso não autorizado
+- Notificação a plataformas de hospedagem para remoção de conteúdo
 
-**Penalidades Administrativas**
+### Penalidades Administrativas
 - Revogação permanente dos direitos de uso
 - Inclusão em lista de usuários com restrições
 - Notificação a terceiros sobre violações identificadas
+- Bloqueio de acesso a atualizações e suporte
 
-**Responsabilidades Financeiras**
+### Responsabilidades Financeiras
 - Pagamento de royalties retroativos por uso comercial não licenciado
 - Custos legais e administrativos relacionados à violação
 - Danos diretos e indiretos causados pelo uso inadequado
+- Multas contratuais conforme legislação aplicável
 
 ## Isenção de Garantias
 
@@ -96,19 +138,83 @@ Este software é fornecido "as is", sem garantias expressas ou implícitas de qu
 - Compatibilidade com sistemas específicos
 - Perdas de dados ou interrupções de serviço
 - Danos diretos ou indiretos decorrentes do uso
+- Vulnerabilidades de segurança não documentadas
+- Conformidade com regulamentações específicas
+
+### Limitação de Responsabilidade
+Em nenhuma circunstância o desenvolvedor será responsável por danos que excedam o valor pago pela licença comercial, quando aplicável.
+
+## Conformidade Legal
+
+### Legislação Aplicável
+Esta licença é regida pelas leis brasileiras e internacionais de propriedade intelectual, incluindo:
+- Lei de Direitos Autorais (Lei 9.610/98)
+- Marco Civil da Internet (Lei 12.965/14)
+- Lei Geral de Proteção de Dados (Lei 13.709/18)
+- Convenções internacionais de propriedade intelectual
+
+### Jurisdição
+Qualquer disputa relacionada a esta licença será resolvida nos tribunais brasileiros, com foro na cidade de São Paulo, SP.
+
+## Privacidade e Coleta de Dados
+
+### Dados Coletados
+O software pode coletar informações não pessoais para:
+- Verificação de conformidade com a licença
+- Estatísticas de uso e performance
+- Detecção de violações de segurança
+- Melhoria do produto
+
+### Proteção de Dados
+- Nenhum dado pessoal é coletado sem consentimento
+- Informações coletadas são protegidas conforme LGPD
+- Dados não são compartilhados com terceiros sem autorização
+- Usuários podem solicitar remoção de dados coletados
+
+## Atualizações e Modificações
+
+### Alterações na Licença
+- O desenvolvedor reserva-se o direito de alterar os termos desta licença
+- Alterações aplicam-se apenas a versões futuras do software
+- Usuários serão notificados sobre mudanças significativas
+- Versões anteriores mantêm os termos originais
+
+### Versionamento da Licença
+- Esta é a versão 1.0 da licença ASC
+- Alterações serão documentadas e versionadas
+- Histórico de mudanças será mantido publicamente
 
 ## Informações de Contato
 
 **Desenvolvedor:** AsyncCypher  
-**Email:** contato.asynccypher@gmail.com  
-**Repositório:** https://github.com/CypherASC/asc-authentication-system  
+**Email Comercial:** contato.asynccypher@gmail.com  
+**Email Técnico:** suporte.asynccypher@gmail.com  
+**Repositório Oficial:** https://github.com/CypherASC/asc-authentication-system  
+**Website:** https://asynccypher.dev  
 
 **Licença Base:** Creative Commons BY-NC-ND 4.0  
 **URL da Licença:** https://creativecommons.org/licenses/by-nc-nd/4.0/  
 
-## Vigência e Alterações
+## Vigência e Validade
 
-Esta licença permanece em vigor enquanto o software for utilizado. O autor reserva-se o direito de alterar os termos desta licença para versões futuras do software, sendo que tais alterações não afetarão retroativamente os direitos já concedidos.
+Esta licença permanece em vigor enquanto o software for utilizado e não seja violada. A licença é válida internacionalmente e reconhecida em jurisdições que respeitam as convenções de propriedade intelectual.
 
-**Última atualização:** Novembro de 2025  
-**Versão da licença:** 1.0
+### Rescisão
+- Violações resultam em rescisão automática da licença
+- Rescisão não afeta direitos adquiridos antes da violação
+- Usuários podem encerrar a licença a qualquer momento cessando o uso
+
+### Sobrevivência de Cláusulas
+Mesmo após rescisão, permanecem válidas as cláusulas de:
+- Proteção de propriedade intelectual
+- Limitação de responsabilidade
+- Atribuição obrigatória
+- Confidencialidade
+
+---
+
+**Última atualização:** Janeiro de 2025  
+**Versão da licença:** 1.0  
+**Idioma oficial:** Português (Brasil)
+
+*Para versões em outros idiomas, consulte o repositório oficial. Em caso de conflito entre traduções, a versão em português prevalece.*
